@@ -1,19 +1,71 @@
-# README
+# 東紀州KOT自動入力ツール（試作版）
 
-## About
+## 概要  
+グループギアの「作業報告書（Excel）」を読み込み、King of Time（KOT）に打刻を自動登録するツールです。
 
-This is the official Wails React-TS template.
+---
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
+## 使い方
 
-## Live Development
+1. ダウンロードした `east-kishu-kot-setup.exe` を実行してインストールしてください。
+2. デスクトップにできたアイコンからアプリを起動します。
+3. KOTのIDとパスワードを入力し、対象のExcelファイルを選択してください。  
+　⇒ 自動的に打刻が登録されます。
 
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
+---
 
-## Building
+## 注意事項（必ずご確認ください）
 
-To build a redistributable, production mode package, use `wails build`.
+- **更新・削除機能は未実装です**  
+　⇒ 打刻が未登録の状態でのみご利用ください（既存打刻の上書き・編集はできません）
+
+- **Excelフォーマットは「グループギアの作業報告書」に完全準拠**  
+　⇒ テンプレート以外のファイルでは正常に動作しません
+
+- **対応期間は「当月分のみ」**  
+　⇒ 先月・来月分の登録は未対応です
+
+- **既にKOTに打刻が登録されていると、二重登録となる可能性があります**
+
+- **試作版のため、不具合があれば作成者までご連絡ください**
+
+- **登録対象はExcelファイル内の「最も左のシート」のみです**  
+　⇒ シート順を変更すると、意図しない内容が登録される可能性があります
+
+- **King of Timeの画面構成が変更された場合、動作しなくなる可能性があります**
+
+---
+
+## セキュリティについて
+
+- **ログイン情報は保持しません**
+- **外部との通信はKOTサイトのみ**
+- **キーロガーなどのマルウェア機能は一切含まれておりません**
+
+---
+
+## SmartScreen（青い警告画面）について
+
+初回起動時、Windows SmartScreenによって以下の警告が表示されることがあります：
+
+```
+Windows によって PC が保護されました
+```
+
+これは、**開発者署名のない実行ファイルに対するWindowsの通常のセキュリティ動作**です。
+
+### 【解除手順】
+
+1. 「詳細情報」をクリック
+2. 「実行」ボタンを選択
+
+> ※ セキュリティ上の懸念がある方は、通信内容をネットワーク監視ソフト等でご確認ください。
+
+---
+
+## ライセンス・問い合わせ
+
+本ツールは試作版です。  
+動作保証はありませんので、ご利用にあたっては内容をご理解のうえ、ご自身の判断でご活用ください。
+
+ご意見・不具合報告などは開発者までご連絡ください。
