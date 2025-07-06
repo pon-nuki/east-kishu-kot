@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import kihoIcon from "../assets/ki-ho.png";
+import { motion } from "framer-motion";
 
 const Home = () => {
   const [excelPath, setExcelPath] = useState("");
@@ -50,15 +51,26 @@ return (
   <div className="flex flex-col h-screen bg-gray-900 text-white overflow-x-hidden">
 
     {/* タイトル部 */}
-    <div className="flex items-center justify-center pt-6">
-      <img
-        src={kihoIcon}
-        alt="きーほくん"
-        className="w-8 h-8 mr-2 rounded-full shadow"
-      />
-      <h1 className="text-2xl font-bold text-white text-center whitespace-nowrap">
-        東紀州KOT自動入力ツール（試作版）
-      </h1>
+    <div className="flex flex-col items-center justify-center pt-6">
+      <div className="flex items-center mb-1">
+        <img
+          src={kihoIcon}
+          alt="きーほくん"
+          className="w-8 h-8 mr-2 rounded-full shadow"
+        />
+        <h1 className="text-2xl font-bold text-white text-center whitespace-nowrap">
+          東紀州KOT自動入力ツール（試作版）
+        </h1>
+      </div>
+      <motion.p
+        className="text-xs text-gray-300 italic"
+        style={{ marginTop: "8px" }}
+        initial={{ opacity: 0, y: -4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.8, delay: 0.8 }}
+      >
+        Made with ❤️ in Kii-Nagashima, Mie
+      </motion.p>
     </div>
 
     <hr className="mt-4 border-t border-gray-500 w-4/5 mx-auto" />
