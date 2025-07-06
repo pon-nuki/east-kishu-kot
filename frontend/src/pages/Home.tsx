@@ -47,118 +47,165 @@ const Home = () => {
     window.go.main.App.GetAppMeta().then(setMeta);
   }, []);
 
-return (
-  <div className="flex flex-col h-screen bg-gray-900 text-white overflow-x-hidden">
+  return (
+    <div className="flex flex-col h-screen bg-gray-900 text-white overflow-x-hidden">
 
-    {/* タイトル部 */}
-    <div className="flex flex-col items-center justify-center pt-6">
-      <div className="flex items-center mb-1">
-        <img
-          src={kihoIcon}
-          alt="きーほくん"
-          className="w-8 h-8 mr-2 rounded-full shadow"
-        />
-        <h1 className="text-2xl font-bold text-white text-center whitespace-nowrap">
-          東紀州KOT自動入力ツール（試作版）
-        </h1>
+      {/* タイトル部 */}
+      <div className="flex flex-col items-center justify-center pt-6">
+        <div className="flex items-center mb-1">
+          <img
+            src={kihoIcon}
+            alt="きーほくん"
+            className="w-8 h-8 mr-2 rounded-full shadow"
+          />
+          <h1 className="text-2xl font-bold text-white text-center whitespace-nowrap">
+            東紀州KOT自動入力ツール（試作版）
+          </h1>
+        </div>
+        <motion.p
+          className="text-xs text-gray-300 italic"
+          style={{ marginTop: "8px" }}
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.8, delay: 0.8 }}
+        >
+          Made with ❤️ in Kii-Nagashima, Mie
+        </motion.p>
       </div>
-      <motion.p
-        className="text-xs text-gray-300 italic"
-        style={{ marginTop: "8px" }}
-        initial={{ opacity: 0, y: -4 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.8, delay: 0.8 }}
-      >
-        Made with ❤️ in Kii-Nagashima, Mie
-      </motion.p>
+
+      <hr className="mt-4 border-t border-gray-500 w-4/5 mx-auto" />
+
+      {/* メイン部 */}
+      <main className="flex-grow flex justify-center items-start py-8 px-4">
+        <div className="bg-white text-black p-6 rounded-xl shadow-lg w-full max-w-[480px]">
+
+          {/* ログインID */}
+          <div className="mb-5">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
+              ログインID
+            </label>
+            <input
+              type="text"
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm shadow-sm focus:ring-2 focus:ring-purple-400 focus:outline-none"
+              placeholder="例: lukXX-XXXXXX"
+            />
+          </div>
+
+          {/* パスワード */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
+              パスワード
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm shadow-sm focus:ring-2 focus:ring-purple-400 focus:outline-none"
+            />
+          </div>
+
+          {/* ファイルパス表示 */}
+          {excelPath && (
+            <div className="mt-4 text-xs text-gray-700 break-all">
+              選択中のファイル：<br />
+              <span className="font-mono">{excelPath}</span>
+            </div>
+          )}
+
+          {/* ボタン群（常に横並び、等幅） */}
+          <div style={{ marginTop: '20px' }}>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              {/* Excelファイル選択ボタン（有効） */}
+              <button
+                style={{
+                  flex: 1,
+                  padding: '10px 16px',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  lineHeight: '1.5',
+                  borderRadius: '8px',
+                  backgroundColor: '#475569', // slate-600
+                  color: '#fff',
+                  boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s ease-in-out',
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#334155')} // slate-700
+                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#475569')}
+                onClick={handleChooseExcel}
+              >
+                Excel選択
+              </button>
+
+              {/* 自動打刻ボタン（有効/無効対応） */}
+              <button
+                style={{
+                  flex: 1,
+                  padding: '10px 16px',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  lineHeight: '1.5',
+                  borderRadius: '8px',
+                  backgroundColor:
+                    !excelPath || !userId || !password || isSubmitting
+                      ? '#9ca3af' // gray-400
+                      : '#6366f1', // indigo-500
+                  color: '#fff',
+                  cursor:
+                    !excelPath || !userId || !password || isSubmitting
+                      ? 'not-allowed'
+                      : 'pointer',
+                  pointerEvents:
+                    !excelPath || !userId || !password || isSubmitting
+                      ? 'none'
+                      : 'auto',
+                  boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
+                  transition: 'background-color 0.2s ease-in-out',
+                }}
+                onMouseOver={(e) => {
+                  if (
+                    excelPath &&
+                    userId &&
+                    password &&
+                    !isSubmitting
+                  ) {
+                    e.currentTarget.style.backgroundColor = '#4f46e5'; // indigo-600
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (
+                    excelPath &&
+                    userId &&
+                    password &&
+                    !isSubmitting
+                  ) {
+                    e.currentTarget.style.backgroundColor = '#6366f1';
+                  }
+                }}
+                onClick={handleRegisterFromExcel}
+                disabled={!excelPath || !userId || !password || isSubmitting}
+              >
+                {isSubmitting ? '打刻中…' : 'Excelから一括自動打刻！'}
+              </button>
+            </div>
+          </div>
+          {/* サマリー */}
+          {summary && (
+            <div className="mt-4 text-sm text-center font-medium text-green-600">
+              {summary}
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* フッター */}
+      <footer className="text-[10px] text-center text-gray-500 py-2">
+        © {new Date().getFullYear()} Godspeed — <span className="italic">Attack from East Kishu!</span>
+      </footer>
     </div>
-
-    <hr className="mt-4 border-t border-gray-500 w-4/5 mx-auto" />
-
-    {/* メイン部 */}
-    <main className="flex-grow flex justify-center items-start py-8 px-4">
-      <div className="bg-white text-black p-6 rounded-xl shadow-lg w-full max-w-[480px]">
-
-        {/* ログインID */}
-        <div className="mb-5">
-          <label className="block text-sm font-semibold text-gray-800 mb-2">
-            ログインID
-          </label>
-          <input
-            type="text"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg p-3 text-sm shadow-sm focus:ring-2 focus:ring-purple-400 focus:outline-none"
-            placeholder="例: lukXX-XXXXXX"
-          />
-        </div>
-
-        {/* パスワード */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-800 mb-2">
-            パスワード
-          </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg p-3 text-sm shadow-sm focus:ring-2 focus:ring-purple-400 focus:outline-none"
-          />
-        </div>
-
-        {/* ファイルパス表示 */}
-        {excelPath && (
-          <div className="mt-4 text-xs text-gray-700 break-all">
-            選択中のファイル：<br />
-            <span className="font-mono">{excelPath}</span>
-          </div>
-        )}
-
-        {/* ボタン群（常に横並び、等幅） */}
-        <div style={{ marginTop: '24px' }}>
-          <div className="mt-6 flex flex-row gap-3">
-            {/* Excelファイル選択ボタン */}
-            <button
-              className="w-1/2 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold text-sm px-4 py-2 rounded-lg shadow-md transition duration-200 ease-in-out"
-              onClick={handleChooseExcel}
-            >
-              Excel選択
-            </button>
-
-            {/* 自動打刻ボタン */}
-            <button
-              className={`w-1/2 text-sm px-4 py-2 rounded-lg font-semibold shadow-md transition duration-200 ease-in-out ${
-                !excelPath || !userId || !password || isSubmitting
-                  ? "bg-gray-400 cursor-not-allowed text-white"
-                  : "bg-purple-600 hover:bg-purple-700 text-white cursor-pointer"
-              }`}
-              onClick={handleRegisterFromExcel}
-              disabled={!excelPath || !userId || !password || isSubmitting}
-            >
-              {isSubmitting ? "打刻中…" : "Excelから一括自動打刻！"}
-            </button>
-          </div>
-        </div>
-        {/* サマリー */}
-        {summary && (
-          <div className="mt-4 text-sm text-center font-medium text-green-600">
-            {summary}
-          </div>
-        )}
-      </div>
-    </main>
-
-    {/* フッター */}
-    <footer className="text-[10px] text-center text-gray-500 py-2">
-      © {new Date().getFullYear()} Godspeed — <span className="italic">Attack from East Kishu!</span>
-    </footer>
-  </div>
-);
-
-
-
-
-
+  );
 };
 
 export default Home;

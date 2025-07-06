@@ -1,5 +1,6 @@
 build/bin
-build/installer"
+build/installer/east-kishu-kot-setup.exe
+build/installer/east-kishu-kot-setup.zip
 node_modules
 frontend/dist
 frontend/node_modules
